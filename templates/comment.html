@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить комментарии</title>
+    <!-- подключаем jquery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript">
+        function selectRegion(){
+            var id_country = $('select[name="REGION_ID"]').val();
+            if(!id_country){
+                $('select[id="selectDataRegion"]').html('');
+            }else{
+                $.ajax({
+                        type: "POST",
+                        url: "/citys/?REGION_ID=" + id_country,
+                        cache: false,
+                        success: function(responce){ $('select[id="selectDataRegion"]').html(responce); }
+                });
+            }
+        }
+
+    </script>
+    <style>
+   input:invalid {
+    background: #fdd; /* Красный цвет фона */
+   }
+   input:valid {
+    background: #fff; /* Белый цвет фона */
+   }
+  </style>
+</head>
+<body>
+<p>
+    <a href="/comment/">Добавить комментарий</a>
+    <a href="/view/">Посмотреть комментарии</a>
+    <a href="/stat/">Посмотреть статистику</a>
+</p>
+<!-- отрисовываем форму -->
+<form enctype='application/json' action="/comment/" method="post">
+    <p>Фамилия</p>
+    <input type="text" required placeholder="Обязательное поле" name="LAST_NAME"/>
+    <p>Имя</p>
+    <input type="text" required placeholder="Обязательное поле" name="FIRST_NAME"/>
+    <p>Отчество</p>
+    <input type="text" name="MIDDLE_NAME"/>
+    <p>Регион</p>
+    <select size="1" name="REGION_ID" onchange="selectRegion();" style="float:left;">
+        <option value="">- выберите регион -</option>
+        <@!!!!@>
+    </select><br />
+    <p>Город</p>
+    <select id="selectDataRegion" name="CITY_ID" size="1" style="float:left;">
+    </select><br />
+        <p>Номер телефона</p>
+    <input type="tel" placeholder="(код города) номер." title="Формат: (096)9999999" pattern="\([0-9]{3,5}\)[0-9]{5,7}" name="TELEPHON"/>
+        <p>E-mail</p>
+    <input type="email" pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$" name="EMAIL"/>
+        <p>Комментарий</p>
+    <input type="text" required placeholder="Обязательное полей" name="COMMENT"/><br />
+    <input type="submit" value="Добавить комментарий">
+</form>
+</body>
+</html>
